@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
         const firstname = customerInfo?.name || 'Customer'
         const email = customerInfo?.email || 'customer@example.com'
         const phone = customerInfo?.phone || '9999999999'
+        const address1 = customerInfo?.address || 'Address'
         const productinfo = items.map((item: any) => item.name).join(', ')
 
         // Success and failure URLs
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
                 firstname,
                 email,
                 phone,
+                address1,
                 surl,
                 furl,
                 hash,

@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Playfair_Display, Great_Vibes } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { Footer } from "@/components/Footer"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${playfair.variable} ${greatVibes.variable} font-sans antialiased bg-[#F3E8E2] text-[#4A3728]`}>
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>

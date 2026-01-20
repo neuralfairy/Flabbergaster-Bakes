@@ -22,12 +22,13 @@ function CheckoutContent() {
     name: "",
     email: "",
     phone: "",
+    address: "",
   })
 
   const handleCheckout = async () => {
     // Validate customer info
-    if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
-      setError("Please fill in all customer details")
+    if (!customerInfo.name || !customerInfo.email || !customerInfo.phone || !customerInfo.address) {
+      setError("Please fill in all customer details including address")
       return
     }
 
@@ -228,6 +229,20 @@ function CheckoutContent() {
                       onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
                       className="w-full bg-white/50 border border-[#E5D5CB] rounded-xl px-4 py-3 focus:outline-none focus:border-[#D98C8C] transition-colors"
                       placeholder="9999999999"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs uppercase tracking-widest font-bold text-[#4A3728] mb-2 block">
+                      Delivery Address *
+                    </label>
+                    <textarea
+                      value={customerInfo.address}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                      className="w-full bg-white/50 border border-[#E5D5CB] rounded-xl px-4 py-3 focus:outline-none focus:border-[#D98C8C] transition-colors resize-none"
+                      placeholder="Enter your complete delivery address"
+                      rows={3}
                       required
                     />
                   </div>
