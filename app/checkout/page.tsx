@@ -2,12 +2,12 @@
 
 import { NavbarRefined } from "@/components/NavbarRefined"
 import { useCart } from "@/lib/cart-store"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { CreditCard, ShoppingBag, Loader2, AlertCircle } from "lucide-react"
 import Image from "next/image"
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { items, getTotalPrice } = useCart()
@@ -197,5 +197,25 @@ export default function CheckoutPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="relative min-h-screen bg-[#F3E8E2]">
+        <NavbarRefined />
+        <main className="pt-40 pb-32 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="h-12 bg-[#E5D5CB]/30 rounded-full w-64 mx-auto mb-4" />
+              <div className="h-6 bg-[#E5D5CB]/20 rounded-full w-96 mx-auto" />
+            </div>
+          </div>
+        </main>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   )
 }
