@@ -8,7 +8,7 @@ import { CheckCircle, Package, ArrowRight } from "lucide-react"
 
 function SuccessContent() {
     const searchParams = useSearchParams()
-    const sessionId = searchParams.get("session_id")
+    const txnid = searchParams.get("txnid")
     const [orderDetails, setOrderDetails] = useState<any>(null)
 
     useEffect(() => {
@@ -72,10 +72,10 @@ function SuccessContent() {
                             </div>
                         </div>
 
-                        {sessionId && (
+                        {txnid && (
                             <div className="mt-8 pt-8 border-t border-[#4A3728]/10">
                                 <p className="text-sm text-[#4A3728]/60">
-                                    <span className="font-bold">Order Reference:</span> {sessionId.slice(0, 20)}...
+                                    <span className="font-bold">Transaction ID:</span> {txnid}
                                 </p>
                             </div>
                         )}

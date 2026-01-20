@@ -2,7 +2,7 @@
 
 import { NavbarRefined } from "@/components/NavbarRefined"
 import { useCart } from "@/lib/cart-store"
-import { Suspense, useState } from "react"
+import { Suspense, useState, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { CreditCard, ShoppingBag, Loader2, AlertCircle } from "lucide-react"
 import Image from "next/image"
@@ -13,15 +13,29 @@ function CheckoutContent() {
   const { items, getTotalPrice } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const formRef = useRef<HTMLFormElement>(null)
 
   const cancelled = searchParams.get("cancelled")
+  const errorParam = searchParams.get("error")
+
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  })
 
   const handleCheckout = async () => {
+    // Validate customer info
+    if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
+      setError("Please fill in all customer details")
+      return
+    }
+
     setLoading(true)
     setError("")
 
     try {
-      const response = await fetch('/api/stripe/checkout', {
+      const response = await fetch('/api/payu/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,6 +47,7 @@ function CheckoutContent() {
             quantity: item.quantity,
             image: item.image,
           })),
+          customerInfo,
         }),
       })
 
@@ -44,9 +59,28 @@ function CheckoutContent() {
         return
       }
 
-      // Redirect to Stripe Hosted Checkout
-      if (data.url) {
-        window.location.href = data.url
+      // Create and submit PayU form
+      if (data.paymentData && formRef.current) {
+        const form = formRef.current
+
+        // Clear existing inputs
+        form.innerHTML = ''
+
+        // Add all payment data as hidden inputs
+        Object.entries(data.paymentData).forEach(([key, value]) => {
+          if (key !== 'payuUrl') {
+            const input = document.createElement('input')
+            input.type = 'hidden'
+            input.name = key
+            input.value = value as string
+            form.appendChild(input)
+          }
+        })
+
+        // Set form action and submit
+        form.action = data.paymentData.payuUrl
+        form.method = 'POST'
+        form.submit()
       }
     } catch (err: any) {
       setError(err.message || 'Something went wrong')
@@ -89,12 +123,12 @@ function CheckoutContent() {
           )}
 
           {/* Error Message */}
-          {error && (
+          {(error || errorParam) && (
             <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-4">
               <AlertCircle className="text-red-600 shrink-0" size={24} />
               <div>
                 <h3 className="font-serif text-lg text-red-900 mb-1">Error</h3>
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-red-700">{error || errorParam}</p>
               </div>
             </div>
           )}
@@ -150,20 +184,65 @@ function CheckoutContent() {
             <div className="bg-white/50 backdrop-blur-xl rounded-[3rem] p-8 shadow-xl flex flex-col">
               <h2 className="font-serif text-2xl mb-6 flex items-center gap-3">
                 <CreditCard size={24} className="text-[#D98C8C]" />
-                Secure Payment
+                Customer Details
               </h2>
 
-              <div className="flex-1 flex flex-col justify-center space-y-6">
-                <div className="text-center space-y-4">
+              <div className="flex-1 space-y-6">
+                {/* Customer Info Form */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs uppercase tracking-widest font-bold text-[#4A3728] mb-2 block">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={customerInfo.name}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                      className="w-full bg-white/50 border border-[#E5D5CB] rounded-xl px-4 py-3 focus:outline-none focus:border-[#D98C8C] transition-colors"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs uppercase tracking-widest font-bold text-[#4A3728] mb-2 block">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      value={customerInfo.email}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                      className="w-full bg-white/50 border border-[#E5D5CB] rounded-xl px-4 py-3 focus:outline-none focus:border-[#D98C8C] transition-colors"
+                      placeholder="your@email.com"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs uppercase tracking-widest font-bold text-[#4A3728] mb-2 block">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      value={customerInfo.phone}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                      className="w-full bg-white/50 border border-[#E5D5CB] rounded-xl px-4 py-3 focus:outline-none focus:border-[#D98C8C] transition-colors"
+                      placeholder="9999999999"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center space-y-4 pt-4">
                   <div className="w-20 h-20 bg-[#D98C8C]/10 rounded-full flex items-center justify-center mx-auto">
                     <CreditCard size={40} className="text-[#D98C8C]" />
                   </div>
                   <div>
                     <h3 className="font-serif text-xl text-[#1A0F0A] mb-2">
-                      Powered by Stripe
+                      Powered by PayU
                     </h3>
                     <p className="text-sm text-[#4A3728]/60 max-w-sm mx-auto">
-                      You'll be redirected to Stripe's secure checkout page to complete your payment safely.
+                      Supports UPI, Cards, Net Banking, Wallets & more
                     </p>
                   </div>
                 </div>
@@ -187,15 +266,18 @@ function CheckoutContent() {
                 </button>
 
                 <div className="flex items-center justify-center gap-4 text-xs text-[#4A3728]/40">
-                  <span>🔒 Secure SSL Encryption</span>
+                  <span>🔒 Secure Payment</span>
                   <span>•</span>
-                  <span>PCI Compliant</span>
+                  <span>PCI DSS Compliant</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      {/* Hidden PayU Form */}
+      <form ref={formRef} style={{ display: 'none' }} />
     </div>
   )
 }
