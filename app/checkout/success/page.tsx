@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { NavbarRefined } from "@/components/NavbarRefined"
 import { CheckCircle, Package, ArrowRight } from "lucide-react"
 
-export default function SuccessPage() {
+function SuccessContent() {
     const searchParams = useSearchParams()
     const sessionId = searchParams.get("session_id")
     const [orderDetails, setOrderDetails] = useState<any>(null)
@@ -101,5 +101,26 @@ export default function SuccessPage() {
                 </div>
             </main>
         </div>
+    )
+}
+
+export default function SuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="relative min-h-screen bg-[#F3E8E2]">
+                <NavbarRefined />
+                <main className="pt-40 pb-32 px-6">
+                    <div className="max-w-3xl mx-auto text-center">
+                        <div className="animate-pulse">
+                            <div className="w-24 h-24 bg-green-100 rounded-full mx-auto mb-6" />
+                            <div className="h-12 bg-[#E5D5CB]/30 rounded-full w-96 mx-auto mb-4" />
+                            <div className="h-6 bg-[#E5D5CB]/20 rounded-full w-full max-w-xl mx-auto" />
+                        </div>
+                    </div>
+                </main>
+            </div>
+        }>
+            <SuccessContent />
+        </Suspense>
     )
 }
