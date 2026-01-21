@@ -17,11 +17,13 @@ export async function POST(req: NextRequest) {
         const merchantKey = process.env.PAYU_MERCHANT_KEY!
 
         // Verify hash for security
-        // Reverse hash formula: sha512(salt|status||||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key)
+        // Reverse hash formula: sha512(salt|status|udf10|udf9|udf8|udf7|udf6|udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key)
+        // 11 pipes after status, then the standard params
         const reverseHashString = `${merchantSalt}|${status}|||||||||||${email}|${firstname}|${productinfo}|${amount}|${txnid}|${merchantKey}`
         const calculatedHash = crypto.createHash('sha512').update(reverseHashString).digest('hex')
 
         if (calculatedHash !== hash) {
+            console.error('Hash Mismatch!', { calculatedHash, receivedHash: hash })
             return NextResponse.redirect(new URL('/checkout?error=invalid_hash', process.env.NEXT_PUBLIC_APP_URL!))
         }
 

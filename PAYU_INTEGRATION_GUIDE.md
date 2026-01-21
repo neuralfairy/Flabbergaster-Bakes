@@ -12,6 +12,8 @@ Your Flabbergaster Bakes website now uses **PayU Payment Gateway** - India's lea
 ```bash
 PAYU_MERCHANT_KEY=your_merchant_key_here
 PAYU_MERCHANT_SALT=your_merchant_salt_here
+PAYU_CLIENT_ID=your_client_id_here
+PAYU_CLIENT_SECRET=your_client_secret_here
 PAYU_MODE=test
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
@@ -71,6 +73,10 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 PAYU_MERCHANT_KEY = your_merchant_key_here
 
 PAYU_MERCHANT_SALT = your_merchant_salt_here
+
+PAYU_CLIENT_ID = your_client_id_here
+
+PAYU_CLIENT_SECRET = your_client_secret_here
 
 PAYU_MODE = test (or 'live' for production)
 

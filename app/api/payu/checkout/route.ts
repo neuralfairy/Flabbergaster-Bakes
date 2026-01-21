@@ -18,7 +18,10 @@ export async function POST(req: NextRequest) {
         // Generate unique transaction ID
         const txnid = `TXN${Date.now()}`
 
-        // Customer details (you can collect these in checkout form)
+        // Format amount to 2 decimal places (crucial for PayU hash)
+        const formattedAmount = amount.toFixed(2)
+
+        // Customer details
         const firstname = customerInfo?.name || 'Customer'
         const email = customerInfo?.email || 'customer@example.com'
         const phone = customerInfo?.phone || '9999999999'
@@ -30,11 +33,12 @@ export async function POST(req: NextRequest) {
         const furl = `${baseUrl}/api/payu/failure`
 
         // Generate hash
-        // Hash formula: sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||salt)
-        const hashString = `${merchantKey}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|||||||||||${merchantSalt}`
+        // Formula: sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10|salt)
+        // We use 11 pipes after email to cover UDF1-10 and Salt
+        const hashString = `${merchantKey}|${txnid}|${formattedAmount}|${productinfo}|${firstname}|${email}|||||||||||${merchantSalt}`
         const hash = crypto.createHash('sha512').update(hashString).digest('hex')
 
-        // PayU endpoint
+        // PayU endpoint (Sandbox/Test)
         const payuUrl = mode === 'live'
             ? 'https://secure.payu.in/_payment'
             : 'https://test.payu.in/_payment'
