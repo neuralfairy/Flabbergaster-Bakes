@@ -106,7 +106,7 @@ export function AboutSectionRefined() {
                                     <span className="text-[#D98C8C] font-bold text-xl font-serif">A</span>
                                 </div>
                                 <h4 className="font-serif text-2xl text-[#1A0F0A]">Master Artisans</h4>
-                                <p className="text-sm text-[#4A3728]/60 leading-relaxed">Our pastry chefs bring decades of Michelin-starred experience to your kitchen table.</p>
+                                <p className="text-sm text-[#4A3728]/60 leading-relaxed">We bring decades of House Baker experience to your table.</p>
                             </div>
                             <div className="group space-y-4">
                                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">

@@ -10,7 +10,7 @@ import Image from "next/image"
 function CheckoutContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { items, getTotalPrice } = useCart()
+  const { items, getTotalPrice, getTotalWeight } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const formRef = useRef<HTMLFormElement>(null)
@@ -47,6 +47,7 @@ function CheckoutContent() {
             price: item.price,
             quantity: item.quantity,
             image: item.image,
+            weight: item.weight,
           })),
           customerInfo,
         }),
@@ -157,6 +158,9 @@ function CheckoutContent() {
                     <div className="flex-1">
                       <h3 className="font-serif text-lg text-[#1A0F0A]">{item.name}</h3>
                       <p className="text-sm text-[#4A3728]/60">Quantity: {item.quantity}</p>
+                      {item.weight && (
+                        <p className="text-xs text-[#4A3728]/50">Weight: {item.weight}g × {item.quantity} = {item.weight * item.quantity}g</p>
+                      )}
                     </div>
                     <div className="text-right">
                       <p className="font-medium text-[#1A0F0A]">
@@ -172,6 +176,12 @@ function CheckoutContent() {
                   <span className="text-[#8C7364]">Subtotal</span>
                   <span className="font-medium">₹{totalPrice.toFixed(2)}</span>
                 </div>
+                {getTotalWeight() > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-[#8C7364]">Total Weight</span>
+                    <span className="font-medium">{getTotalWeight()}g</span>
+                  </div>
+                )}
                 <div className="border-t border-[#E5D5CB] pt-2 mt-2">
                   <div className="flex justify-between">
                     <span className="font-serif text-xl">Total</span>

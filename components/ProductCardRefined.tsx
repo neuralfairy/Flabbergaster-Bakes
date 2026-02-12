@@ -13,6 +13,7 @@ interface Product {
     description: string
     price: number
     image: string
+    weight?: number
 }
 
 interface ProductCardProps {
@@ -33,6 +34,7 @@ export function ProductCardRefined({ product, displayOnly = false }: ProductCard
             name: product.name,
             price: product.price,
             image: product.image,
+            weight: product.weight,
         })
         setShowToast(true)
     }

@@ -7,7 +7,7 @@ import Link from "next/link"
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCart()
+  const { items, updateQuantity, removeItem, getTotalPrice, getTotalWeight, clearCart } = useCart()
 
   if (items.length === 0) {
     return (
@@ -62,7 +62,12 @@ export default function CartPage() {
 
                   <div className="flex-1">
                     <h3 className="font-serif text-xl mb-1">{item.name}</h3>
-                    <p className="text-[#8C7364] mb-4">₹{item.price.toFixed(2)} each</p>
+                    <p className="text-[#8C7364] mb-1">₹{item.price.toFixed(2)} each</p>
+                    {item.weight && (
+                      <p className="text-[#8C7364] text-sm mb-4">
+                        Weight: {item.weight}g {item.quantity > 1 && `(Total: ${item.weight * item.quantity}g)`}
+                      </p>
+                    )}
 
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-3 bg-white/50 rounded-full px-4 py-2">
@@ -114,6 +119,12 @@ export default function CartPage() {
                     <span className="text-[#8C7364]">Subtotal</span>
                     <span className="font-medium">₹{getTotalPrice().toFixed(2)}</span>
                   </div>
+                  {getTotalWeight() > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-[#8C7364]">Total Weight</span>
+                      <span className="font-medium">{getTotalWeight()}g</span>
+                    </div>
+                  )}
                   <div className="border-t border-[#E5D5CB] pt-4">
                     <div className="flex justify-between">
                       <span className="font-serif text-xl">Total</span>

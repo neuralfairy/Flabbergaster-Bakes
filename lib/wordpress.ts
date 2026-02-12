@@ -34,6 +34,7 @@ export interface Product {
     price: number;
     image: string;
     category: string;
+    weight?: number; // Weight in grams
 }
 
 /**
@@ -106,6 +107,32 @@ function extractDescription(post: WordPressPost): string {
 }
 
 /**
+ * Extract weight from post content
+ * Looks for patterns like: 100g, Weight: 150g, 200 grams
+ */
+function extractWeight(content: string): number | undefined {
+    // Remove HTML tags
+    const text = content.replace(/<[^>]*>/g, '');
+
+    // Look for weight patterns
+    const weightPatterns = [
+        /(\d+)\s*g(?:rams?)?/i,
+        /weight[:\s]+(\d+)\s*g(?:rams?)?/i,
+        /(\d+)\s*gm/i,
+    ];
+
+    for (const pattern of weightPatterns) {
+        const match = text.match(pattern);
+        if (match) {
+            return parseInt(match[1]);
+        }
+    }
+
+    // Return undefined if not found (will use default later)
+    return undefined;
+}
+
+/**
  * Fetch all cupcakes from WordPress Posts
  */
 export async function getCupcakes(): Promise<Product[]> {
@@ -141,7 +168,8 @@ export async function getCupcakes(): Promise<Product[]> {
                 description: extractDescription(post),
                 price: extractPrice(post.content.rendered),
                 image: imageUrl,
-                category: categoryName
+                category: categoryName,
+                weight: extractWeight(post.content.rendered) || 100 // Default 100g if not specified
             };
         });
     } catch (error) {
@@ -182,7 +210,8 @@ export async function getCupcakeById(id: string): Promise<Product | null> {
             description: extractDescription(post),
             price: extractPrice(post.content.rendered),
             image: imageUrl,
-            category: categoryName
+            category: categoryName,
+            weight: extractWeight(post.content.rendered) || 100 // Default 100g if not specified
         };
     } catch (error) {
         console.error('Error fetching cupcake:', error);

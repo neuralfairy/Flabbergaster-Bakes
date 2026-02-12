@@ -1,7 +1,7 @@
 "use client"
 
 import { NavbarRefined } from "@/components/NavbarRefined"
-import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Sparkles } from "lucide-react"
 import { useState } from "react"
 
 export default function ContactPage() {
@@ -100,8 +100,8 @@ export default function ContactPage() {
                                     <div>
                                         <h3 className="font-serif text-xl mb-2">Visit Us</h3>
                                         <p className="text-[#8C7364]">
-                                            123 Baker Street<br />
-                                            Sweet Town, ST 12345
+                                            Frazer Town, Bengaluru,<br />
+                                            Karnataka, India
                                         </p>
                                     </div>
                                 </div>
@@ -113,19 +113,20 @@ export default function ContactPage() {
                                     <div>
                                         <h3 className="font-serif text-xl mb-2">Call Us</h3>
                                         <p className="text-[#8C7364]">
-                                            (555) 123-4567
+                                            +91 96068 90909
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="flex items-start gap-4 mb-6">
                                     <div className="w-12 h-12 bg-[#D98C8C]/20 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <Mail className="text-[#D98C8C]" size={24} />
+                                        <Sparkles className="text-[#D98C8C]" size={24} />
                                     </div>
                                     <div>
-                                        <h3 className="font-serif text-xl mb-2">Email Us</h3>
+                                        <h3 className="font-serif text-xl mb-2">Artisanship</h3>
                                         <p className="text-[#8C7364]">
-                                            hello@flabbergasterbakes.com
+                                            Pure Ingredients<br />
+                                            Zero Preservatives
                                         </p>
                                     </div>
                                 </div>

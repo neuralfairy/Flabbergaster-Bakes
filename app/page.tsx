@@ -4,7 +4,7 @@ import { refinedProducts } from "@/lib/refined-products"
 import { NavbarRefined } from "@/components/NavbarRefined"
 import { HeroRefined } from "@/components/HeroRefined"
 import { ProductCardRefined } from "@/components/ProductCardRefined"
-import { Sparkles, MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react"
+import { Sparkles, MapPin, Phone, Mail, Clock, ArrowRight, Heart } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
@@ -90,7 +90,7 @@ export default function Home() {
                     </div>
                     <div>
                       <h5 className="font-serif text-2xl mb-1">Our Flagship</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">123 Baker Street, Mayfair</p>
+                      <p className="text-[#4A3728]/60 text-lg italic">Frazer Town, Bengaluru, Karnataka, India</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-8">
@@ -98,17 +98,26 @@ export default function Home() {
                       <Phone size={28} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Private Line</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">+44 20 7946 0123</p>
+                      <h5 className="font-serif text-2xl mb-1">Get on Line</h5>
+                      <p className="text-[#4A3728]/60 text-lg italic">+91 96068 90909</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-8">
                     <div className="w-16 h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
-                      <Mail size={28} strokeWidth={1.5} />
+                      <Sparkles size={28} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Inquiries</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">bespoke@flabbergaster.com</p>
+                      <h5 className="font-serif text-2xl mb-1">Purely Artisanal</h5>
+                      <p className="text-[#4A3728]/60 text-lg italic">Pure Ingredients, Zero Preservatives</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-8">
+                    <div className="w-16 h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
+                      <Heart size={28} strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h5 className="font-serif text-2xl mb-1">Made with Love</h5>
+                      <p className="text-[#4A3728]/60 text-lg italic">Handcrafted for your celebrations</p>
                     </div>
                   </div>
                 </div>
@@ -133,12 +142,12 @@ export default function Home() {
                       <h3 className="font-serif text-3xl mb-2">Our Atelier</h3>
                       <div className="flex items-center gap-3 text-white/80">
                         <MapPin size={18} className="text-[#D98C8C]" />
-                        <span className="italic font-serif">123 Baker Street, Mayfair, London</span>
+                        <span className="italic font-serif">Frazer Town, Bengaluru, Karnataka, India</span>
                       </div>
                     </div>
 
                     <a
-                      href="https://maps.google.com/?q=123+Baker+Street+Mayfair+London"
+                      href="https://maps.google.com/?q=Frazer+Town+Bengaluru+Karnataka+India"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-white text-[#1A0F0A] px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#D98C8C] hover:text-white transition-all duration-300 shadow-lg"
@@ -151,16 +160,16 @@ export default function Home() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
                     <div className="space-y-1">
-                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">Opening Hours</p>
-                      <p className="font-serif italic text-white/80">Mon - Fri: 9am - 7pm</p>
+                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">The Atelier</p>
+                      <p className="font-serif italic text-white/80">Frazer Town, Bengaluru</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">Private Line</p>
-                      <p className="font-serif italic text-white/80">+44 20 7946 0123</p>
+                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">Get on Line</p>
+                      <p className="font-serif italic text-white/80">+91 96068 90909</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">Inquiries</p>
-                      <p className="font-serif italic text-white/80">bespoke@flabbergaster.com</p>
+                      <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">Artisanship</p>
+                      <p className="font-serif italic text-white/80">Handcrafted Daily</p>
                     </div>
                   </div>
                 </div>
