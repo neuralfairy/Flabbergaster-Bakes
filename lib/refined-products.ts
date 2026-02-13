@@ -108,6 +108,51 @@ export const refinedProducts = [
         image: "/product_cookies.png",
         category: "Signature Collection",
         weight: 120
+    },
+    {
+        id: "13",
+        name: "Blueberry Bliss Mousse",
+        description: "Silky blueberry mousse layered with fresh blueberries and a hint of lemon zest.",
+        price: 6.00,
+        image: "/product_blueberry.png",
+        category: "Signature Mousse Collection",
+        weight: 130
+    },
+    {
+        id: "14",
+        name: "Strawberry Dream Mousse",
+        description: "Light strawberry mousse blended with creamy sweetness for a soft, dreamy delight.",
+        price: 6.00,
+        image: "/single_cupcake_top.png",
+        category: "Signature Mousse Collection",
+        weight: 130
+    },
+    {
+        id: "15",
+        name: "Biscoff Caramel Mousse",
+        description: "Rich caramel mousse infused with crushed Biscoff cookies and a caramel drizzle.",
+        price: 6.50,
+        image: "/product_caramel.png",
+        category: "Signature Mousse Collection",
+        weight: 140
+    },
+    {
+        id: "16",
+        name: "Chocolate Dream Mousse",
+        description: "Decadent dark chocolate mousse with layers of Belgian chocolate ganache.",
+        price: 6.50,
+        image: "/product_chocolate.png",
+        category: "Signature Mousse Collection",
+        weight: 135
+    },
+    {
+        id: "17",
+        name: "Vanilla Fusion Mousse",
+        description: "Classic vanilla bean mousse with Madagascar vanilla and a delicate cream swirl.",
+        price: 5.75,
+        image: "/hero_cupcake_4.png",
+        category: "Signature Mousse Collection",
+        weight: 125
     }
 ];
 
@@ -118,37 +163,57 @@ const CUPCAKE_ORDER = [
     "Blueberry Bliss Cupcake",
     "Chocolate Dreamy Cupcake",
     "Biscoff Caramel Cupcake",
-    "Gulab jamun cupcake",
-    "Rasmali cupcake",
-    "Rasgulla cupcake",
-    "Kajukatli cupcake"
+    "Gulab Jamun Cupcake",
+    "Rasmalai Cupcake",
+    "Rasgulla Cupcake",
+    "Kaju Katli Cupcake"
+];
+
+// Custom order for Signature Mousse Collection
+const MOUSSE_ORDER = [
+    "Blueberry Bliss Mousse",
+    "Strawberry Dream Mousse",
+    "Biscoff Caramel Mousse",
+    "Chocolate Dream Mousse",
+    "Vanilla Fusion Mousse"
 ];
 
 // Function to sort products based on custom order
 function sortProductsByCustomOrder(products: any[]): any[] {
-    return products.sort((a, b) => {
-        // Normalize names for comparison (case-insensitive, trim whitespace)
+    // Separate regular cupcakes and mousse collection
+    const regularCupcakes = products.filter(p => p.category !== "Signature Mousse Collection");
+    const mousseCupcakes = products.filter(p => p.category === "Signature Mousse Collection");
+    
+    // Sort regular cupcakes
+    regularCupcakes.sort((a, b) => {
         const nameA = a.name.toLowerCase().trim();
         const nameB = b.name.toLowerCase().trim();
         
-        // Find indices in custom order
-        const indexA = CUPCAKE_ORDER.findIndex(name => nameA.includes(name.toLowerCase()) || name.toLowerCase().includes(nameA));
-        const indexB = CUPCAKE_ORDER.findIndex(name => nameB.includes(name.toLowerCase()) || name.toLowerCase().includes(nameB));
+        const indexA = CUPCAKE_ORDER.findIndex(name => nameA.includes(name.toLowerCase().trim()));
+        const indexB = CUPCAKE_ORDER.findIndex(name => nameB.includes(name.toLowerCase().trim()));
         
-        // If both found in custom order, sort by that order
-        if (indexA !== -1 && indexB !== -1) {
-            return indexA - indexB;
-        }
-        
-        // If only A is in custom order, it comes first
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
         if (indexA !== -1) return -1;
-        
-        // If only B is in custom order, it comes first
         if (indexB !== -1) return 1;
-        
-        // If neither in custom order, maintain original order
         return 0;
     });
+    
+    // Sort mousse cupcakes
+    mousseCupcakes.sort((a, b) => {
+        const nameA = a.name.toLowerCase().trim();
+        const nameB = b.name.toLowerCase().trim();
+        
+        const indexA = MOUSSE_ORDER.findIndex(name => nameA.includes(name.toLowerCase().trim()));
+        const indexB = MOUSSE_ORDER.findIndex(name => nameB.includes(name.toLowerCase().trim()));
+        
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
+        return 0;
+    });
+    
+    // Return regular first, then mousse
+    return [...regularCupcakes, ...mousseCupcakes];
 }
 
 // Function to get products from WordPress (with fallback to static)

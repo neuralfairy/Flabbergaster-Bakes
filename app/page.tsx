@@ -21,9 +21,10 @@ export default function Home() {
       // Filter for the specific cupcakes we want to feature
       const featured = allProducts.filter(product => {
         const name = product.name.toLowerCase()
-        return name.includes('strawberry dream') || 
-               name.includes('blueberry bliss') || 
+        return name.includes('blueberry bliss') || 
+               name.includes('vanilla cake') ||
                name.includes('biscoff caramel')
+               
       }).slice(0, 3) // Take only first 3 in case there are duplicates
       
       setFeaturedProducts(featured)

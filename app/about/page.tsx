@@ -21,11 +21,11 @@ export default function AboutPage() {
 
 
     const gallery = [
-        "/about_cupcake_1.png",
-        "/product_pistachio.png",
-        "/product_raspberry.png",
+        "/single_cupcake_top.png",
+        "/hero_cupcake_4.png",
+        "/product_blueberry.png",
         "/product_caramel.png",
-        "/product_wild_blueberry.png",
+        "/product_chocolate.png",
         "/product_matcha.png"
     ]
 

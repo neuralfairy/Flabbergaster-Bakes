@@ -162,6 +162,18 @@ export async function getCupcakes(): Promise<Product[]> {
                 categoryName = post._embedded['wp:term'][0][0].name;
             }
 
+            // Override category for mousse products (detected by name or WordPress category)
+            const productName = post.title.rendered.toLowerCase();
+            // Match both full names with "mousse" and base names for the mousse collection
+            const mousseBaseNames = ['blueberry bliss', 'strawberry dream', 'biscoff caramel', 'chocolate dream', 'vanilla fusion'];
+            const isMouseProduct = productName.includes('mousse') || 
+                                   mousseBaseNames.some(base => productName.includes(base) && !productName.includes('cupcake')) ||
+                                   categoryName.toLowerCase().includes('mousse');
+            
+            if (isMouseProduct) {
+                categoryName = 'Signature Mousse Collection';
+            }
+
             return {
                 id: post.id.toString(),
                 name: post.title.rendered,

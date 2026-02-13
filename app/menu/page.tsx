@@ -66,10 +66,10 @@ export default function MenuPage() {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-                        {loading ? (
-                            // Loading Skeleton
-                            Array.from({ length: 6 }).map((_, index) => (
+                    {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                            {/* Loading Skeleton */}
+                            {Array.from({ length: 6 }).map((_, index) => (
                                 <div key={index} className="relative animate-pulse">
                                     {/* Skeleton Background Number */}
                                     <span className="absolute -top-12 -left-6 font-serif text-9xl text-[#1A0F0A]/[0.02] leading-none pointer-events-none select-none">
@@ -89,27 +89,68 @@ export default function MenuPage() {
                                         </div>
                                     </div>
                                 </div>
-                            ))
-                        ) : products.length > 0 ? (
-                            // Actual Products
-                            products.map((product, index) => (
-                                <div key={product.id} className="relative animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${index * 50}ms` }}>
-                                    {/* Background Number */}
-                                    <span className="absolute -top-12 -left-6 font-serif text-9xl text-[#1A0F0A]/[0.02] leading-none pointer-events-none select-none">
-                                        {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    <ProductCardRefined product={product} />
+                            ))}
+                        </div>
+                    ) : products.length > 0 ? (
+                        // Group products by category
+                        <>
+                            {/* Regular Cupcakes Section */}
+                            {products.filter(p => p.category !== "Signature Mousse Collection").length > 0 && (
+                                <div className="mb-20">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                                        {products.filter(p => p.category !== "Signature Mousse Collection").map((product, index) => (
+                                            <div key={product.id} className="relative animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${index * 50}ms` }}>
+                                                {/* Background Number */}
+                                                <span className="absolute -top-12 -left-6 font-serif text-9xl text-[#1A0F0A]/[0.02] leading-none pointer-events-none select-none">
+                                                    {String(index + 1).padStart(2, '0')}
+                                                </span>
+                                                <ProductCardRefined product={product} />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            ))
-                        ) : (
-                            // No Products Found
-                            <div className="col-span-full text-center py-20">
-                                <p className="font-serif text-2xl text-[#4A3728]/60 italic">
-                                    No cupcakes available at the moment. Please check back soon!
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                            )}
+
+                            {/* Signature Mousse Collection Section */}
+                            {products.filter(p => p.category === "Signature Mousse Collection").length > 0 && (
+                                <div className="mt-32">
+                                    {/* Section Title */}
+                                    <div className="flex flex-col items-center text-center mb-16 space-y-4">
+                                        <div className="flex items-center justify-center gap-4">
+                                            <span className="w-12 h-[1px] bg-[#D98C8C]" />
+                                            <span className="text-[#D98C8C] font-bold tracking-[0.4em] uppercase text-[10px]">Indulgent Delights</span>
+                                            <span className="w-12 h-[1px] bg-[#D98C8C]" />
+                                        </div>
+                                        <h2 className="text-4xl lg:text-5xl font-serif text-[#1A0F0A] leading-tight">
+                                            Signature <span className="italic text-[#8B4C4C]">Mousse Collection</span>
+                                        </h2>
+                                        <p className="text-[#4A3728]/70 font-serif text-lg italic max-w-2xl mx-auto">
+                                            Silky smooth, delicately crafted mousse desserts
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                                        {products.filter(p => p.category === "Signature Mousse Collection").map((product, index) => (
+                                            <div key={product.id} className="relative animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${index * 50}ms` }}>
+                                                {/* Background Number */}
+                                                <span className="absolute -top-12 -left-6 font-serif text-9xl text-[#1A0F0A]/[0.02] leading-none pointer-events-none select-none">
+                                                    {String(index + 1).padStart(2, '0')}
+                                                </span>
+                                                <ProductCardRefined product={product} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        // No Products Found
+                        <div className="text-center py-20">
+                            <p className="font-serif text-2xl text-[#4A3728]/60 italic">
+                                No cupcakes available at the moment. Please check back soon!
+                            </p>
+                        </div>
+                    )}
                 </div>
             </main>
 
