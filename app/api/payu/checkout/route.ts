@@ -59,6 +59,9 @@ export async function POST(req: NextRequest) {
                 furl,
                 hash,
                 payuUrl,
+                pg: 'UPI',
+                bankcode: 'UPI',
+                vpa: customerInfo.vpa, // This triggers the collect request
             }
         })
     } catch (error: any) {

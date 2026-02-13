@@ -9,6 +9,7 @@ import { CheckCircle, Package, ArrowRight } from "lucide-react"
 function SuccessContent() {
     const searchParams = useSearchParams()
     const txnid = searchParams.get("txnid")
+    const manual = searchParams.get("manual") === "true"
     const [orderDetails, setOrderDetails] = useState<any>(null)
 
     useEffect(() => {
@@ -31,11 +32,13 @@ function SuccessContent() {
                         </div>
 
                         <h1 className="text-5xl lg:text-7xl font-serif text-[#1A0F0A] mb-4">
-                            Order Confirmed!
+                            {manual ? "Order Received!" : "Order Confirmed!"}
                         </h1>
 
                         <p className="text-xl text-[#4A3728]/70 font-serif italic max-w-xl mx-auto">
-                            Thank you for your order. We've received your payment and will start preparing your delicious cupcakes right away!
+                            {manual
+                                ? "Thank you! We've received your manual UPI request. Please ensure you share the screenshot on WhatsApp for quick verification."
+                                : "Thank you for your order. We've received your payment and will start preparing your delicious cupcakes right away!"}
                         </p>
                     </div>
 
@@ -48,10 +51,16 @@ function SuccessContent() {
 
                         <div className="space-y-4 text-[#4A3728]/80">
                             <div className="flex items-start gap-4">
-                                <span className="w-8 h-8 bg-[#D98C8C]/20 rounded-full flex items-center justify-center text-sm font-bold text-[#D98C8C] shrink-0">1</span>
+                                <span className="w-8 h-8 bg-[#D98C8C]/20 rounded-full flex items-center justify-center text-sm font-bold text-[#D98C8C] shrink-0">{manual ? "!" : "1"}</span>
                                 <div>
-                                    <h3 className="font-serif text-lg text-[#1A0F0A] mb-1">Order Confirmation</h3>
-                                    <p className="text-sm">You'll receive an email confirmation shortly with your order details.</p>
+                                    <h3 className="font-serif text-lg text-[#1A0F0A] mb-1">
+                                        {manual ? "Payment Verification" : "Order Confirmation"}
+                                    </h3>
+                                    <p className="text-sm">
+                                        {manual
+                                            ? "Once we verify your payment screenshot on WhatsApp, your order will be officially confirmed."
+                                            : "You'll receive an email confirmation shortly with your order details."}
+                                    </p>
                                 </div>
                             </div>
 

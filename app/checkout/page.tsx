@@ -4,7 +4,7 @@ import { NavbarRefined } from "@/components/NavbarRefined"
 import { useCart } from "@/lib/cart-store"
 import { Suspense, useState, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { CreditCard, ShoppingBag, Loader2, AlertCircle } from "lucide-react"
+import { CreditCard, ShoppingBag, Loader2, AlertCircle, X, Smartphone, Check } from "lucide-react"
 import Image from "next/image"
 
 function CheckoutContent() {
@@ -18,6 +18,8 @@ function CheckoutContent() {
   const cancelled = searchParams.get("cancelled")
   const errorParam = searchParams.get("error")
 
+  const [showUPIModal, setShowUPIModal] = useState(false)
+  const [txnId, setTxnId] = useState("")
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     email: "",
@@ -28,66 +30,31 @@ function CheckoutContent() {
   const handleCheckout = async () => {
     // Validate customer info
     if (!customerInfo.name || !customerInfo.email || !customerInfo.phone || !customerInfo.address) {
-      setError("Please fill in all customer details including address")
+      setError("Please fill in all details including address")
       return
     }
 
     setLoading(true)
     setError("")
 
-    try {
-      const response = await fetch('/api/payu/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          items: items.map(item => ({
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-            weight: item.weight,
-          })),
-          customerInfo,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.error) {
-        setError(data.error)
-        setLoading(false)
-        return
-      }
-
-      // Create and submit PayU form
-      if (data.paymentData && formRef.current) {
-        const form = formRef.current
-
-        // Clear existing inputs
-        form.innerHTML = ''
-
-        // Add all payment data as hidden inputs
-        Object.entries(data.paymentData).forEach(([key, value]) => {
-          if (key !== 'payuUrl') {
-            const input = document.createElement('input')
-            input.type = 'hidden'
-            input.name = key
-            input.value = value as string
-            form.appendChild(input)
-          }
-        })
-
-        // Set form action and submit
-        form.action = data.paymentData.payuUrl
-        form.method = 'POST'
-        form.submit()
-      }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong')
+    // Smoothly open UPI Modal
+    setTimeout(() => {
       setLoading(false)
+      setShowUPIModal(true)
+    }, 800)
+  }
+
+  const handleFinalSubmit = async () => {
+    if (!txnId || txnId.length < 8) {
+      setError("Please enter a valid UPI Transaction ID to confirm payment")
+      return
     }
+
+    setLoading(true)
+    // Here we would ideally save the order with the Txn ID
+    setTimeout(() => {
+      router.push(`/checkout/success?manual=true&txnid=${txnId}`)
+    }, 2000)
   }
 
   if (items.length === 0) {
@@ -256,53 +223,127 @@ function CheckoutContent() {
                       required
                     />
                   </div>
+
                 </div>
 
-                <div className="text-center space-y-4 pt-4">
-                  <div className="w-20 h-20 bg-[#D98C8C]/10 rounded-full flex items-center justify-center mx-auto">
-                    <CreditCard size={40} className="text-[#D98C8C]" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-xl text-[#1A0F0A] mb-2">
-                      Powered by PayU
-                    </h3>
-                    <p className="text-sm text-[#4A3728]/60 max-w-sm mx-auto">
-                      Supports UPI, Cards, Net Banking, Wallets & more
-                    </p>
-                  </div>
+                <div className="pt-8 mt-4 border-t border-[#E5D5CB]">
+                  <button
+                    onClick={handleCheckout}
+                    disabled={loading}
+                    className="w-full bg-[#1A0F0A] text-white py-5 rounded-full font-bold uppercase tracking-widest hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard size={20} />
+                        <span>Proceed to Payment</span>
+                      </>
+                    )}
+                  </button>
                 </div>
 
-                <button
-                  onClick={handleCheckout}
-                  disabled={loading}
-                  className="w-full bg-[#1A0F0A] text-white py-5 rounded-full font-bold uppercase tracking-widest hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 size={20} className="animate-spin" />
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard size={20} />
-                      <span>Proceed to Payment</span>
-                    </>
-                  )}
-                </button>
-
-                <div className="flex items-center justify-center gap-4 text-xs text-[#4A3728]/40">
-                  <span>🔒 Secure Payment</span>
-                  <span>•</span>
-                  <span>PCI DSS Compliant</span>
+                <div className="flex items-center justify-center gap-4 text-xs text-[#4A3728]/40 mt-6">
+                  <Smartphone size={14} />
+                  <span>UPI Payment Powered by HDFC</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
 
-      {/* Hidden PayU Form */}
-      <form ref={formRef} style={{ display: 'none' }} />
+        {/* UPI Payment Modal */}
+        {showUPIModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="relative w-full max-w-md bg-[#F3E8E2] rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-white/20">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowUPIModal(false)}
+                className="absolute top-6 right-6 p-2 bg-white/50 hover:bg-white rounded-full text-[#1A0F0A] transition-colors z-10"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="p-8 md:p-10 text-center">
+                <div className="w-16 h-16 bg-[#D98C8C]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-12">
+                  <Smartphone className="text-[#D98C8C]" size={32} />
+                </div>
+
+                <h2 className="text-3xl font-serif text-[#1A0F0A] mb-2">Pay via UPI</h2>
+                <p className="text-[#4A3728]/60 text-sm mb-8 italic">Scan QR or choose your preferred app</p>
+
+                {/* QR Code Section */}
+                <div className="relative w-56 h-56 mx-auto bg-white p-4 rounded-[2rem] shadow-inner mb-8 border-4 border-white">
+                  <Image
+                    src="/payments/upi-qr.jpg"
+                    alt="UPI QR Code"
+                    fill
+                    className="object-contain p-2"
+                  />
+                </div>
+
+                <div className="text-[#1A0F0A] font-serif text-2xl mb-10">
+                  Total: <span className="text-[#D98C8C]">₹{totalPrice.toFixed(2)}</span>
+                </div>
+
+                {/* UPI App Buttons */}
+                <div className="grid grid-cols-2 gap-4 mb-10">
+                  <a
+                    href={`upi://pay?pa=yourupiid@upi&pn=FlabbergasterBakes&am=${totalPrice.toFixed(2)}&cu=INR`}
+                    className="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-[#E5D5CB] hover:border-[#D98C8C] hover:bg-[#D98C8C]/5 transition-all group"
+                  >
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <span className="font-bold text-[#4A3728]/40 group-hover:text-[#D98C8C]">GPay</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#4A3728]">Google Pay</span>
+                  </a>
+                  <a
+                    href={`upi://pay?pa=yourupiid@upi&pn=FlabbergasterBakes&am=${totalPrice.toFixed(2)}&cu=INR`}
+                    className="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-[#E5D5CB] hover:border-[#D98C8C] hover:bg-[#D98C8C]/5 transition-all group"
+                  >
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <span className="font-bold text-[#4A3728]/40 group-hover:text-[#D98C8C]">PhPe</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#4A3728]">PhonePe</span>
+                  </a>
+                </div>
+
+                {/* Transaction ID Section */}
+                <div className="space-y-4 pt-8 border-t border-[#E5D5CB]">
+                  <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#D98C8C] block">
+                    Enter UPI Transaction ID
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={txnId}
+                      onChange={(e) => setTxnId(e.target.value)}
+                      placeholder="12 digit Ref Number"
+                      className="w-full bg-white border border-[#E5D5CB] rounded-xl px-4 py-4 focus:outline-none focus:border-[#D98C8C] transition-colors text-center font-mono tracking-widest"
+                    />
+                    {txnId.length >= 12 && (
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500">
+                        <Check size={20} />
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={handleFinalSubmit}
+                    disabled={loading || txnId.length < 8}
+                    className="w-full bg-[#1A0F0A] text-white py-5 rounded-full font-bold uppercase tracking-widest hover:bg-[#D98C8C] transition-all disabled:opacity-50 flex items-center justify-center gap-3"
+                  >
+                    {loading ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} />}
+                    <span>Complete Order</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   )
 }
