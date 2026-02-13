@@ -22,7 +22,7 @@ export default function Home() {
         <HeroRefined />
 
         {/* Menu Section */}
-        <section id="menu" className="py-12 px-6 relative overflow-hidden">
+        <section id="menu" className="py-12 md:py-20 px-6 relative overflow-hidden">
           {/* Decorative Background Elements */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-[#D98C8C]/5 blur-[120px] rounded-full" />
@@ -31,13 +31,13 @@ export default function Home() {
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-12">
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <span className="w-12 h-[1px] bg-[#D98C8C]" />
-                  <span className="text-[#D98C8C] font-bold tracking-[0.4em] uppercase text-[10px]">The Collection</span>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8 md:gap-12">
+              <div className="space-y-4 md:space-y-6">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <span className="w-8 md:w-12 h-[1px] bg-[#D98C8C]" />
+                  <span className="text-[#D98C8C] font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase text-[9px] md:text-[10px]">The Collection</span>
                 </div>
-                <h2 className="text-6xl lg:text-8xl font-serif text-[#1A0F0A] leading-[0.9] tracking-tight">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif text-[#1A0F0A] leading-[0.9] tracking-tight">
                   Handcrafted<br />
                   <span className="italic relative inline-block">
                     Cupcakes
@@ -46,22 +46,22 @@ export default function Home() {
                 </h2>
               </div>
 
-              <div className="flex flex-col items-start md:items-end gap-10 max-w-sm">
-                <p className="text-[#4A3728]/70 font-serif text-xl italic leading-relaxed text-left md:text-right">
+              <div className="flex flex-col items-start md:items-end gap-6 md:gap-10 max-w-sm">
+                <p className="text-[#4A3728]/70 font-serif text-base md:text-xl italic leading-relaxed text-left md:text-right">
                   "A curated selection of our most delicate cupcake blossoms, where every bite is a miniature celebration."
                 </p>
-                <Link href="/menu" className="group flex items-center gap-4 bg-[#1A0F0A] text-white px-10 py-5 rounded-full hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl">
-                  <span className="text-sm font-bold uppercase tracking-widest">View Cupcake Menu</span>
-                  <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                <Link href="/menu" className="group flex items-center gap-3 md:gap-4 bg-[#1A0F0A] text-white px-6 md:px-10 py-4 md:py-5 rounded-full hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl">
+                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest">View Cupcake Menu</span>
+                  <ArrowRight size={16} className="md:w-[18px] md:h-[18px] group-hover:translate-x-2 transition-transform" />
                 </Link>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-16 gap-y-20 md:gap-y-32">
               {featuredProducts.map((product, index) => (
                 <div key={product.id} className="relative">
                   {/* Large background number for editorial feel */}
-                  <span className="absolute -top-16 -left-8 font-serif text-[12rem] text-[#1A0F0A]/[0.03] leading-none pointer-events-none select-none">
+                  <span className="absolute -top-10 md:-top-16 -left-4 md:-left-8 font-serif text-[8rem] md:text-[12rem] text-[#1A0F0A]/[0.03] leading-none pointer-events-none select-none">
                     0{index + 1}
                   </span>
                   <ProductCardRefined product={product} displayOnly={true} />
@@ -74,23 +74,23 @@ export default function Home() {
         <AboutSectionRefined />
 
         {/* Contact Section */}
-        <section id="contact" className="py-40 px-6 relative overflow-hidden bg-white">
+        <section id="contact" className="py-20 md:py-32 lg:py-40 px-6 relative overflow-hidden bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-              <div className="space-y-12">
-                <div className="space-y-4">
-                  <span className="text-[#D98C8C] font-bold tracking-[0.4em] uppercase text-[10px]">Reservations</span>
-                  <h2 className="text-6xl lg:text-8xl font-serif text-[#1A0F0A]">Let's Create<br />Magic.</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
+              <div className="space-y-8 md:space-y-12">
+                <div className="space-y-3 md:space-y-4">
+                  <span className="text-[#D98C8C] font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase text-[9px] md:text-[10px]">Reservations</span>
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif text-[#1A0F0A]">Let's Create<br />Magic.</h2>
                 </div>
 
-                <div className="space-y-10">
-                  <div className="flex items-start gap-8">
-                    <div className="w-16 h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
-                      <MapPin size={28} strokeWidth={1.5} />
+                <div className="space-y-6 md:space-y-10">
+                  <div className="flex items-start gap-4 md:gap-8">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
+                      <MapPin size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Our Flagship</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">Frazer Town, Bengaluru, Karnataka, India</p>
+                      <h5 className="font-serif text-xl md:text-2xl mb-1">Our Flagship</h5>
+                      <p className="text-[#4A3728]/60 text-base md:text-lg italic">Frazer Town, Bengaluru, Karnataka, India</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-8">
@@ -98,32 +98,32 @@ export default function Home() {
                       <Phone size={28} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Get on Line</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">+91 96068 90909</p>
+                      <h5 className="font-serif text-xl md:text-2xl mb-1">Get on Line</h5>
+                      <p className="text-[#4A3728]/60 text-base md:text-lg italic">+91 96068 90909</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-8">
-                    <div className="w-16 h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
-                      <Sparkles size={28} strokeWidth={1.5} />
+                  <div className="flex items-start gap-4 md:gap-8">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
+                      <Sparkles size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Purely Artisanal</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">Pure Ingredients, Zero Preservatives</p>
+                      <h5 className="font-serif text-xl md:text-2xl mb-1">Purely Artisanal</h5>
+                      <p className="text-[#4A3728]/60 text-base md:text-lg italic">Pure Ingredients, Zero Preservatives</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-8">
-                    <div className="w-16 h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
-                      <Heart size={28} strokeWidth={1.5} />
+                  <div className="flex items-start gap-4 md:gap-8">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F3E8E2] rounded-2xl flex items-center justify-center text-[#4A3728] shrink-0 transform hover:rotate-12 transition-transform shadow-sm">
+                      <Heart size={24} className="md:w-7 md:h-7" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h5 className="font-serif text-2xl mb-1">Made with Love</h5>
-                      <p className="text-[#4A3728]/60 text-lg italic">Handcrafted for your celebrations</p>
+                      <h5 className="font-serif text-xl md:text-2xl mb-1">Made with Love</h5>
+                      <p className="text-[#4A3728]/60 text-base md:text-lg italic">Handcrafted for your celebrations</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="relative h-[600px] w-full group overflow-hidden rounded-[3rem] shadow-2xl">
+              <div className="relative h-[400px] md:h-[500px] lg:h-[600px] w-full group overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-2xl">
                 {/* Background Image of the Storefront */}
                 <Image
                   src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1000&auto=format&fit=crop"
@@ -136,13 +136,13 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Glassmorphism Address Card */}
-                <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-2xl border border-white/20 p-8 rounded-[2rem] text-white space-y-6">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8 bg-white/10 backdrop-blur-2xl border border-white/20 p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-white space-y-4 md:space-y-6">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-6">
                     <div>
-                      <h3 className="font-serif text-3xl mb-2">Our Atelier</h3>
-                      <div className="flex items-center gap-3 text-white/80">
-                        <MapPin size={18} className="text-[#D98C8C]" />
-                        <span className="italic font-serif">Frazer Town, Bengaluru, Karnataka, India</span>
+                      <h3 className="font-serif text-2xl md:text-3xl mb-2">Our Atelier</h3>
+                      <div className="flex items-center gap-2 md:gap-3 text-white/80">
+                        <MapPin size={16} className="md:w-[18px] md:h-[18px] text-[#D98C8C]" />
+                        <span className="italic font-serif text-sm md:text-base">Frazer Town, Bengaluru, Karnataka, India</span>
                       </div>
                     </div>
 
@@ -150,7 +150,7 @@ export default function Home() {
                       href="https://maps.google.com/?q=Frazer+Town+Bengaluru+Karnataka+India"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-white text-[#1A0F0A] px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#D98C8C] hover:text-white transition-all duration-300 shadow-lg"
+                      className="bg-white text-[#1A0F0A] px-6 md:px-8 py-2.5 md:py-3 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#D98C8C] hover:text-white transition-all duration-300 shadow-lg"
                     >
                       Get Directions
                     </a>
@@ -158,7 +158,7 @@ export default function Home() {
 
                   <div className="h-[1px] bg-white/10 w-full" />
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-sm">
                     <div className="space-y-1">
                       <p className="text-[#D98C8C] text-[10px] font-bold uppercase tracking-widest">The Atelier</p>
                       <p className="font-serif italic text-white/80">Frazer Town, Bengaluru</p>
@@ -180,7 +180,7 @@ export default function Home() {
       </main>
 
       {/* Floating Explore Button - Bottom Right */}
-      <Link href="/menu" className="fixed bottom-12 right-12 z-40 group">
+      <Link href="/menu" className="hidden lg:flex fixed bottom-12 right-12 z-40 group">
         <div className="relative">
           <div className="absolute -inset-4 bg-[#D98C8C]/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
           <button className="relative flex items-center gap-4 bg-white/90 backdrop-blur-2xl border border-white px-10 py-5 rounded-full shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:scale-105 transition-all duration-500 group-hover:shadow-[0_25px_80px_rgba(0,0,0,0.15)] overflow-hidden">
@@ -195,12 +195,12 @@ export default function Home() {
         </div>
       </Link>
 
-      <footer className="py-32 px-6 border-t border-[#4A3728]/5 bg-[#F3E8E2]">
+      <footer className="py-16 md:py-24 lg:py-32 px-6 border-t border-[#4A3728]/5 bg-[#F3E8E2]">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <p className="font-script text-7xl text-[#1A0F0A] mb-4">Flabbergaster Bakes</p>
-          <p className="text-[#D98C8C] text-sm font-bold tracking-[0.6em] uppercase mb-16">The Art of Pure Fine Baking</p>
+          <p className="font-script text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#1A0F0A] mb-3 md:mb-4">Flabbergaster Bakes</p>
+          <p className="text-[#D98C8C] text-xs md:text-sm font-bold tracking-[0.4em] md:tracking-[0.6em] uppercase mb-10 md:mb-16">The Art of Pure Fine Baking</p>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-20 gap-y-8 mb-20 text-xs font-bold uppercase tracking-[0.3em]">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 md:gap-x-20 gap-y-6 md:gap-y-8 mb-12 md:mb-20 text-xs font-bold uppercase tracking-[0.25em] md:tracking-[0.3em]">
             <Link href="#home" className="text-[#1A0F0A]/60 hover:text-[#1A0F0A] transition-colors">Home</Link>
             <Link href="#menu" className="text-[#1A0F0A]/60 hover:text-[#1A0F0A] transition-colors">Selection</Link>
             <Link href="#about" className="text-[#1A0F0A]/60 hover:text-[#1A0F0A] transition-colors">About</Link>

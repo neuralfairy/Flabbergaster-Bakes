@@ -24,45 +24,48 @@ export function HeroRefined() {
     return (
         <section id="home" className="relative h-screen w-full flex items-center overflow-hidden bg-[#F3E8E2]">
             {/* Left Side Content - Dedicated Space for Text */}
-            <div className="relative z-20 w-full lg:w-1/2 h-full flex items-center justify-center px-6 lg:px-20 pt-20">
+            <div className="relative z-20 w-full lg:w-1/2 h-full flex items-center justify-center px-6 md:px-10 lg:px-20 pt-20 pb-32 md:pb-20">
                 <div className="max-w-xl">
-                    <div className="overflow-hidden mb-8">
-                        <div className="flex items-center gap-4 animate-in slide-in-from-bottom-full duration-700">
-                            <span className="w-12 h-[1px] bg-[#D98C8C]" />
-                            <span className="text-[#D98C8C] font-bold tracking-[0.4em] uppercase text-[10px]">
+                    <div className="overflow-hidden mb-6 md:mb-8">
+                        <div className="flex items-center gap-3 md:gap-4 animate-in slide-in-from-bottom-full duration-700">
+                            <span className="w-8 md:w-12 h-[1px] bg-[#D98C8C]" />
+                            <span className="text-[#D98C8C] font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase text-[8px] md:text-[10px]">
                                 Boutique Cupcake Collection
                             </span>
                         </div>
                     </div>
 
-                    <h1 className="title-script text-[#1A0F0A] mb-8 leading-[0.8] animate-in fade-in slide-in-from-left-20 duration-1000 delay-100">
+                    <h1 className="title-script text-[#1A0F0A] mb-6 md:mb-8 leading-[0.8] animate-in fade-in slide-in-from-left-20 duration-1000 delay-100 text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6rem]">
                         Flabbergaster<br />
-                        <span className="italic ml-8">Bakes</span>
+                        <span className="italic ml-4 md:ml-8">Bakes</span>
                     </h1>
 
-                    <p className="font-serif text-xl lg:text-2xl text-[#2A1810]/70 mb-14 leading-relaxed italic font-medium max-w-lg animate-in fade-in slide-in-from-left-10 duration-1000 delay-300">
+                    <p className="font-serif text-base md:text-xl lg:text-2xl text-[#2A1810]/70 mb-10 md:mb-14 leading-relaxed italic font-medium max-w-lg animate-in fade-in slide-in-from-left-10 duration-1000 delay-300">
                         "Born from a passion for perfection, our luxury cupcakes are miniature masterpieces crafted to linger in your memory."
                     </p>
 
-                    <div className="flex flex-wrap gap-8 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
-                        <Link href="#menu" className="btn-premium">
+                    <div className="flex flex-wrap gap-4 md:gap-8 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+                        <Link href="#menu" className="btn-premium text-xs md:text-sm">
                             Explore Collection
                         </Link>
-                        <Link href="#about" className="group flex items-center gap-4 text-[#1A0F0A] font-bold tracking-widest text-[10px] uppercase hover:text-[#D98C8C] transition-colors">
+                        <Link href="#about" className="group flex items-center gap-3 md:gap-4 text-[#1A0F0A] font-bold tracking-widest text-[9px] md:text-[10px] uppercase hover:text-[#D98C8C] transition-colors">
                             <span>Our Philosophy</span>
-                            <div className="w-8 h-[1px] bg-[#1A0F0A] group-hover:w-12 group-hover:bg-[#D98C8C] transition-all" />
+                            <div className="w-6 md:w-8 h-[1px] bg-[#1A0F0A] group-hover:w-10 md:group-hover:w-12 group-hover:bg-[#D98C8C] transition-all" />
                         </Link>
                     </div>
                 </div>
 
                 {/* Vertical Decorative Text */}
-                <div className="absolute left-10 bottom-20 hidden xl:block origin-left -rotate-90">
+                <div className="absolute left-6 md:left-10 bottom-16 md:bottom-20 hidden xl:block origin-left -rotate-90">
                     <span className="text-[10px] font-bold tracking-[1em] uppercase text-[#1A0F0A]/20">Est. Boutique MMXXIV</span>
                 </div>
             </div>
 
             {/* Right Side - Featured Image with Editorial Container */}
-            <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 z-10 lg:relative lg:block h-[120%] lg:h-[90%] -translate-y-[10%] lg:translate-y-0">
+            <div className="absolute inset-0 lg:inset-y-0 lg:right-0 w-full lg:w-1/2 z-0 lg:z-10 lg:relative lg:block h-full lg:h-[90%] lg:-translate-y-0">
+                {/* Mobile gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#F3E8E2]/60 via-[#F3E8E2]/40 to-[#F3E8E2]/80 lg:hidden z-[5]" />
+                
                 <div className="relative w-full h-full lg:rounded-l-[10rem] overflow-hidden shadow-2xl border-l border-white/20">
                     {images.map((src, index) => (
                         <div
@@ -85,13 +88,13 @@ export function HeroRefined() {
             </div>
 
             {/* Floating scroll indicator */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 animate-bounce z-40">
-                <span className="text-[9px] uppercase tracking-[0.5em] text-[#1A0F0A] font-bold">Discover</span>
-                <div className="w-[1px] h-12 bg-gradient-to-b from-[#1A0F0A] via-[#1A0F0A]/40 to-transparent" />
+            <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 md:gap-4 animate-bounce z-40">
+                <span className="text-[8px] md:text-[9px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-[#1A0F0A] font-bold">Discover</span>
+                <div className="w-[1px] h-8 md:h-12 bg-gradient-to-b from-[#1A0F0A] via-[#1A0F0A]/40 to-transparent" />
             </div>
 
             {/* Subtle background patterns */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#D98C8C]/5 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[600px] md:w-[800px] h-[600px] md:h-[800px] bg-[#D98C8C]/5 blur-[150px] rounded-full pointer-events-none" />
         </section>
     )
 }

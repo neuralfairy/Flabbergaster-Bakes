@@ -13,6 +13,7 @@ function CheckoutContent() {
   const { items, getTotalPrice, getTotalWeight } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [cooldown, setCooldown] = useState(0)
   const formRef = useRef<HTMLFormElement>(null)
 
   const cancelled = searchParams.get("cancelled")
@@ -26,6 +27,12 @@ function CheckoutContent() {
   })
 
   const handleCheckout = async () => {
+    // Check cooldown
+    if (cooldown > 0) {
+      setError(`Please wait ${cooldown} seconds before trying again`)
+      return
+    }
+
     // Validate customer info
     if (!customerInfo.name || !customerInfo.email || !customerInfo.phone || !customerInfo.address) {
       setError("Please fill in all details including address")
@@ -74,12 +81,27 @@ function CheckoutContent() {
         document.body.appendChild(form)
         form.submit()
       } else {
-        setError('Failed to initiate payment. Please try again.')
+        const errorMsg = data.error || 'Failed to initiate payment. Please try again.'
+        setError(errorMsg)
         setLoading(false)
+        
+        // Set cooldown if rate limited
+        if (errorMsg.toLowerCase().includes('too many') || errorMsg.toLowerCase().includes('rate')) {
+          setCooldown(60)
+          const interval = setInterval(() => {
+            setCooldown(prev => {
+              if (prev <= 1) {
+                clearInterval(interval)
+                return 0
+              }
+              return prev - 1
+            })
+          }, 1000)
+        }
       }
     } catch (error) {
       console.error('Payment initiation error:', error)
-      setError('Failed to initiate payment. Please try again.')
+      setError('Failed to initiate payment. Please try again later.')
       setLoading(false)
     }
   }
@@ -256,13 +278,18 @@ function CheckoutContent() {
                 <div className="pt-8 mt-4 border-t border-[#E5D5CB]">
                   <button
                     onClick={handleCheckout}
-                    disabled={loading}
+                    disabled={loading || cooldown > 0}
                     className="w-full bg-[#1A0F0A] text-white py-5 rounded-full font-bold uppercase tracking-widest hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                   >
                     {loading ? (
                       <>
                         <Loader2 size={20} className="animate-spin" />
                         <span>Processing...</span>
+                      </>
+                    ) : cooldown > 0 ? (
+                      <>
+                        <AlertCircle size={20} />
+                        <span>Please wait {cooldown}s</span>
                       </>
                     ) : (
                       <>

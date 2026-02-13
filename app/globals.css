@@ -52,8 +52,20 @@ body::before {
 
 .title-script {
   font-family: var(--font-script), cursive;
-  font-size: 5rem;
+  font-size: 3rem;
   line-height: 1.1;
+}
+
+@media (min-width: 640px) {
+  .title-script {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .title-script {
+    font-size: 5rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -70,12 +82,12 @@ body::before {
 }
 
 .btn-premium {
-  padding: 1rem 2.5rem;
+  padding: 0.875rem 2rem;
   border-radius: 9999px;
   background-color: #1A0F0A;
   color: #F3E8E2;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
@@ -87,6 +99,13 @@ body::before {
   border: 1px solid #1A0F0A;
   position: relative;
   overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .btn-premium {
+    padding: 1rem 2.5rem;
+    font-size: 0.875rem;
+  }
 }
 
 .btn-premium::after {

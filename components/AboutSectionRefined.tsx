@@ -110,10 +110,10 @@ export function AboutSectionRefined() {
                             </div>
                             <div className="group space-y-4">
                                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                    <span className="text-[#D98C8C] font-bold text-xl font-serif">E</span>
+                                    <span className="text-[#D98C8C] font-bold text-xl font-serif">F</span>
                                 </div>
-                                <h4 className="font-serif text-2xl text-[#1A0F0A]">Ethical Sourcing</h4>
-                                <p className="text-sm text-[#4A3728]/60 leading-relaxed">We partner with local farmers to ensure every berry and egg is of the highest pedigree.</p>
+                                <h4 className="font-serif text-2xl text-[#1A0F0A]">Fresh Daily</h4>
+                                <p className="text-sm text-[#4A3728]/60 leading-relaxed">Every cupcake is handcrafted fresh to order, ensuring maximum flavor and quality.</p>
                             </div>
                         </div>
 
