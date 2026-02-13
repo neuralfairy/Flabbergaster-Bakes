@@ -1,18 +1,36 @@
 "use client"
 
-import { refinedProducts } from "@/lib/refined-products"
+import { getProducts } from "@/lib/refined-products"
 import { NavbarRefined } from "@/components/NavbarRefined"
 import { HeroRefined } from "@/components/HeroRefined"
 import { ProductCardRefined } from "@/components/ProductCardRefined"
 import { Sparkles, MapPin, Phone, Mail, Clock, ArrowRight, Heart } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { AboutSectionRefined } from "@/components/AboutSectionRefined"
 
 export default function Home() {
-  const featuredProducts = refinedProducts.slice(0, 3)
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([])
+
+  useEffect(() => {
+    async function loadFeaturedProducts() {
+      const allProducts = await getProducts()
+      
+      // Filter for the specific cupcakes we want to feature
+      const featured = allProducts.filter(product => {
+        const name = product.name.toLowerCase()
+        return name.includes('strawberry dream') || 
+               name.includes('blueberry bliss') || 
+               name.includes('biscoff caramel')
+      }).slice(0, 3) // Take only first 3 in case there are duplicates
+      
+      setFeaturedProducts(featured)
+    }
+    
+    loadFeaturedProducts()
+  }, [])
 
   return (
     <div className="relative min-h-screen">
@@ -58,15 +76,34 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-16 gap-y-20 md:gap-y-32">
-              {featuredProducts.map((product, index) => (
-                <div key={product.id} className="relative">
-                  {/* Large background number for editorial feel */}
-                  <span className="absolute -top-10 md:-top-16 -left-4 md:-left-8 font-serif text-[8rem] md:text-[12rem] text-[#1A0F0A]/[0.03] leading-none pointer-events-none select-none">
-                    0{index + 1}
-                  </span>
-                  <ProductCardRefined product={product} displayOnly={true} />
-                </div>
-              ))}
+              {featuredProducts.length === 0 ? (
+                // Loading skeleton
+                Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="relative animate-pulse">
+                    <span className="absolute -top-10 md:-top-16 -left-4 md:-left-8 font-serif text-[8rem] md:text-[12rem] text-[#1A0F0A]/[0.02] leading-none pointer-events-none select-none">
+                      0{index + 1}
+                    </span>
+                    <div className="space-y-6">
+                      <div className="w-full aspect-[4/5] bg-[#E5D5CB]/30 rounded-[2.5rem]" />
+                      <div className="space-y-3 px-2">
+                        <div className="h-8 bg-[#E5D5CB]/30 rounded-full w-3/4 mx-auto" />
+                        <div className="h-4 bg-[#E5D5CB]/20 rounded-full w-full" />
+                        <div className="h-4 bg-[#E5D5CB]/20 rounded-full w-5/6 mx-auto" />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                featuredProducts.map((product, index) => (
+                  <div key={product.id} className="relative">
+                    {/* Large background number for editorial feel */}
+                    <span className="absolute -top-10 md:-top-16 -left-4 md:-left-8 font-serif text-[8rem] md:text-[12rem] text-[#1A0F0A]/[0.03] leading-none pointer-events-none select-none">
+                      0{index + 1}
+                    </span>
+                    <ProductCardRefined product={product} displayOnly={true} />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </section>
