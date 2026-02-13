@@ -7,11 +7,13 @@ export async function POST(req: NextRequest) {
         const status = formData.get('status') as string
 
         // Redirect to checkout with error message
+        const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
         return NextResponse.redirect(
-            new URL(`/checkout?cancelled=true&txnid=${txnid}&status=${status}`, process.env.NEXT_PUBLIC_APP_URL!)
+            new URL(`/checkout?cancelled=true&txnid=${txnid}&status=${status}`, redirectUrl)
         )
     } catch (error: any) {
         console.error('PayU failure handler error:', error)
-        return NextResponse.redirect(new URL('/checkout?error=server_error', process.env.NEXT_PUBLIC_APP_URL!))
+        const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+        return NextResponse.redirect(new URL('/checkout?error=server_error', redirectUrl))
     }
 }

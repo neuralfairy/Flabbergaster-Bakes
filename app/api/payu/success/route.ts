@@ -24,18 +24,22 @@ export async function POST(req: NextRequest) {
 
         if (calculatedHash !== hash) {
             console.error('Hash Mismatch!', { calculatedHash, receivedHash: hash })
-            return NextResponse.redirect(new URL('/checkout?error=invalid_hash', process.env.NEXT_PUBLIC_APP_URL!))
+            const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            return NextResponse.redirect(new URL('/checkout?error=invalid_hash', redirectUrl))
         }
 
+        const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+        
         if (status === 'success') {
             // Payment successful - redirect to success page
-            return NextResponse.redirect(new URL(`/checkout/success?txnid=${txnid}`, process.env.NEXT_PUBLIC_APP_URL!))
+            return NextResponse.redirect(new URL(`/checkout/success?txnid=${txnid}`, redirectUrl))
         } else {
             // Payment failed
-            return NextResponse.redirect(new URL('/checkout?error=payment_failed', process.env.NEXT_PUBLIC_APP_URL!))
+            return NextResponse.redirect(new URL('/checkout?error=payment_failed', redirectUrl))
         }
     } catch (error: any) {
         console.error('PayU success handler error:', error)
-        return NextResponse.redirect(new URL('/checkout?error=server_error', process.env.NEXT_PUBLIC_APP_URL!))
+        const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+        return NextResponse.redirect(new URL('/checkout?error=server_error', redirectUrl))
     }
 }

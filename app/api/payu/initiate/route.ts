@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
     // Generate unique transaction ID
     const txnid = `TXN${Date.now()}${Math.floor(Math.random() * 1000)}`
     
-    // Callback URLs
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    // Callback URLs - Use NEXT_PUBLIC_APP_URL or NEXT_PUBLIC_BASE_URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
     const surl = `${baseUrl}/api/payu/success`
     const furl = `${baseUrl}/api/payu/failure`
 

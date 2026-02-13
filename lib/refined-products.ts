@@ -111,6 +111,46 @@ export const refinedProducts = [
     }
 ];
 
+// Custom order for cupcakes display
+const CUPCAKE_ORDER = [
+    "Classic Vanilla Cupcake",
+    "Strawberry Dream Cupcake",
+    "Blueberry Bliss Cupcake",
+    "Chocolate Dreamy Cupcake",
+    "Biscoff Caramel Cupcake",
+    "Gulab jamun cupcake",
+    "Rasmali cupcake",
+    "Rasgulla cupcake",
+    "Kajukatli cupcake"
+];
+
+// Function to sort products based on custom order
+function sortProductsByCustomOrder(products: any[]): any[] {
+    return products.sort((a, b) => {
+        // Normalize names for comparison (case-insensitive, trim whitespace)
+        const nameA = a.name.toLowerCase().trim();
+        const nameB = b.name.toLowerCase().trim();
+        
+        // Find indices in custom order
+        const indexA = CUPCAKE_ORDER.findIndex(name => nameA.includes(name.toLowerCase()) || name.toLowerCase().includes(nameA));
+        const indexB = CUPCAKE_ORDER.findIndex(name => nameB.includes(name.toLowerCase()) || name.toLowerCase().includes(nameB));
+        
+        // If both found in custom order, sort by that order
+        if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+        }
+        
+        // If only A is in custom order, it comes first
+        if (indexA !== -1) return -1;
+        
+        // If only B is in custom order, it comes first
+        if (indexB !== -1) return 1;
+        
+        // If neither in custom order, maintain original order
+        return 0;
+    });
+}
+
 // Function to get products from WordPress (with fallback to static)
 export async function getProducts() {
     try {
@@ -119,14 +159,15 @@ export async function getProducts() {
 
         if (wpProducts.length > 0) {
             console.log('✅ Successfully loaded', wpProducts.length, 'cupcakes from WordPress!');
-            return wpProducts;
+            // Apply custom sorting
+            return sortProductsByCustomOrder(wpProducts);
         } else {
             console.log('⚠️ No cupcakes found in WordPress, using static products');
-            return refinedProducts;
+            return sortProductsByCustomOrder(refinedProducts);
         }
     } catch (error) {
         console.error('❌ WordPress fetch failed:', error);
         console.log('📦 Falling back to static products');
-        return refinedProducts;
+        return sortProductsByCustomOrder(refinedProducts);
     }
 }

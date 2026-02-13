@@ -138,7 +138,7 @@ function extractWeight(content: string): number | undefined {
 export async function getCupcakes(): Promise<Product[]> {
     try {
         console.log('🔗 Connecting to WordPress:', WORDPRESS_API_URL);
-        const response = await fetch(`${WORDPRESS_API_URL}/posts?_embed&per_page=100&orderby=date&order=asc`, {
+        const response = await fetch(`${WORDPRESS_API_URL}/posts?_embed&per_page=100&orderby=id&order=asc`, {
             next: { revalidate: 60 } // Revalidate every 60 seconds
         });
 
