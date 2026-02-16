@@ -29,6 +29,7 @@ function CheckoutContent() {
   })
 
   const [transactionId, setTransactionId] = useState("")
+  const [paymentMethod, setPaymentMethod] = useState<'payu' | 'manual'>('payu')
 
   const copyUpiId = async () => {
     try {
@@ -63,6 +64,59 @@ function CheckoutContent() {
 
     setError("")
     setStep('payment')
+  }
+
+  const handlePayUPayment = async () => {
+    setLoading(true)
+    setError("")
+
+    try {
+      // Call PayU API
+      const response = await fetch('/api/payu/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          customerInfo: {
+            name: customerInfo.name,
+            email: customerInfo.email,
+            phone: customerInfo.phone,
+            address: customerInfo.address,
+          },
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to initiate payment')
+      }
+
+      // Create form and submit to PayU
+      const form = document.createElement('form')
+      form.method = 'POST'
+      form.action = data.paymentData.payuUrl
+
+      Object.entries(data.paymentData).forEach(([key, value]) => {
+        if (key !== 'payuUrl') {
+          const input = document.createElement('input')
+          input.type = 'hidden'
+          input.name = key
+          input.value = value as string
+          form.appendChild(input)
+        }
+      })
+
+      document.body.appendChild(form)
+      form.submit()
+    } catch (err: any) {
+      setError(err.message || 'Failed to initiate payment')
+      setLoading(false)
+    }
   }
 
   const handleConfirmPayment = async () => {
@@ -334,7 +388,7 @@ function CheckoutContent() {
                     >
                       <ArrowLeft size={20} className="text-[#4A3728]" />
                     </button>
-                    <h2 className="font-serif text-2xl">Pay via UPI</h2>
+                    <h2 className="font-serif text-2xl">Choose Payment Method</h2>
                   </div>
 
                   {/* Amount to Pay */}
@@ -343,7 +397,91 @@ function CheckoutContent() {
                     <p className="font-serif text-3xl text-[#D98C8C]">₹{totalPrice.toFixed(2)}</p>
                   </div>
 
-                  {/* QR Code */}
+                  {/* Payment Method Selection */}
+                  <div className="space-y-4 mb-6">
+                    {/* PayU Option - Recommended */}
+                    <div 
+                      className={`relative border-2 rounded-2xl p-5 cursor-pointer transition-all ${
+                        paymentMethod === 'payu' 
+                          ? 'border-[#D98C8C] bg-[#D98C8C]/5' 
+                          : 'border-[#E5D5CB] bg-white/30 hover:border-[#D98C8C]/30'
+                      }`}
+                      onClick={() => setPaymentMethod('payu')}
+                    >
+                      {paymentMethod === 'payu' && (
+                        <div className="absolute top-3 right-3 bg-[#D98C8C] text-white rounded-full p-1">
+                          <Check size={14} />
+                        </div>
+                      )}
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="text-2xl">💳</div>
+                        <div>
+                          <h3 className="font-serif text-lg text-[#1A0F0A]">
+                            PayU Secure Payment
+                            <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-sans font-bold">
+                              RECOMMENDED
+                            </span>
+                          </h3>
+                          <p className="text-sm text-[#4A3728]/60">
+                            UPI, Cards, Net Banking, Wallets - All options available
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Manual UPI Option */}
+                    <div 
+                      className={`relative border-2 rounded-2xl p-5 cursor-pointer transition-all ${
+                        paymentMethod === 'manual' 
+                          ? 'border-[#D98C8C] bg-[#D98C8C]/5' 
+                          : 'border-[#E5D5CB] bg-white/30 hover:border-[#D98C8C]/30'
+                      }`}
+                      onClick={() => setPaymentMethod('manual')}
+                    >
+                      {paymentMethod === 'manual' && (
+                        <div className="absolute top-3 right-3 bg-[#D98C8C] text-white rounded-full p-1">
+                          <Check size={14} />
+                        </div>
+                      )}
+                      <div className="flex items-center gap-3">
+                        <div className="text-2xl">📱</div>
+                        <div>
+                          <h3 className="font-serif text-lg text-[#1A0F0A]">Manual UPI Payment</h3>
+                          <p className="text-sm text-[#4A3728]/60">
+                            Pay via QR code and enter transaction ID
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PayU Payment Button */}
+                  {paymentMethod === 'payu' ? (
+                    <>
+                      <button
+                        onClick={handlePayUPayment}
+                        disabled={loading}
+                        className="w-full bg-[#1A0F0A] text-white py-5 rounded-full font-bold uppercase tracking-widest hover:bg-[#D98C8C] transition-all duration-500 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                      >
+                        {loading ? (
+                          <>
+                            <Loader2 size={20} className="animate-spin" />
+                            <span>Redirecting to PayU...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Proceed to Pay ₹{totalPrice.toFixed(2)}</span>
+                            <ArrowRight size={20} />
+                          </>
+                        )}
+                      </button>
+                      <div className="flex items-center justify-center gap-2 text-xs text-[#4A3728]/40 mt-4">
+                        <span>🔒 Secure payment by PayU</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Manual UPI Payment UI */}
                   <div className="flex flex-col items-center mb-6">
                     <div className="bg-white p-4 rounded-2xl shadow-lg mb-4">
                       <Image
@@ -421,6 +559,8 @@ function CheckoutContent() {
                     <Smartphone size={14} />
                     <span>Secure UPI Payment</span>
                   </div>
+                  </>
+                  )}
                 </>
               )}
             </div>
