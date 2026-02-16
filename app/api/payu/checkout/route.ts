@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
 
         // Generate hash
         // Formula: sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10|salt)
-        // We use 11 pipes after email to cover UDF1-10 and Salt
-        const hashString = `${merchantKey}|${txnid}|${formattedAmount}|${productinfo}|${firstname}|${email}|||||||||||${merchantSalt}`
+        // Exactly 10 pipes for 10 UDF fields between email and salt
+        const hashString = `${merchantKey}|${txnid}|${formattedAmount}|${productinfo}|${firstname}|${email}||||||||||${merchantSalt}`
         const hash = crypto.createHash('sha512').update(hashString).digest('hex')
 
         // PayU endpoint (Sandbox/Test)
